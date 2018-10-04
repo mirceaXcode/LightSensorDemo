@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *imageNeedle;
 
 @end
 
@@ -16,13 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self selector:@selector(react) name:UIScreenBrightnessDidChangeNotification object:nil];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) react{
+    
+    double brightness = [[UIScreen mainScreen] brightness];
+    
+    CGAffineTransform rotate = CGAffineTransformMakeRotation((brightness * M_PI) - M_PI_2);
+    
+    self.imageNeedle.transform = rotate;
 }
 
 
